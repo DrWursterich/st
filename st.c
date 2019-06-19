@@ -1084,8 +1084,11 @@ kscrolldown(const Arg* a)
 {
 	int n = a->i;
 
-	if (n < 0)
+	if (n < 0) {
 		n = term.row + n;
+	} else if (n == 0) {
+		n = term.row / 2 + n;
+	}
 
 	if (n > term.scr)
 		n = term.scr;
@@ -1102,8 +1105,11 @@ kscrollup(const Arg* a)
 {
 	int n = a->i;
 
-	if (n < 0)
+	if (n < 0) {
 		n = term.row + n;
+	} else if (n == 0) {
+		n = term.row / 2 + n;
+	}
 
 	if (term.scr <= HISTSIZE-n) {
 		term.scr += n;
@@ -1264,6 +1270,13 @@ tmoveto(int x, int y)
 	term.c.state &= ~CURSOR_WRAPNEXT;
 	term.c.x = LIMIT(x, 0, term.col-1);
 	term.c.y = LIMIT(y, miny, maxy);
+}
+
+void
+tmovehorizontal(const Arg* a) 
+{
+	int x = a->i;
+	tmoveto(term.c.x + x, term.c.y);
 }
 
 void
