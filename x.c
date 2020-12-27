@@ -1721,6 +1721,10 @@ xsettitle(char *p)
 int
 xstartdraw(void)
 {
+	/* hack to make images from w3m last
+	 * see https://st.suckless.org/patches/w3m/ */
+	if (IS_SET(MODE_VISIBLE))
+		XCopyArea(xw.dpy, xw.win, xw.buf, dc.gc, 0, 0, win.w, win.h, 0, 0);
 	return IS_SET(MODE_VISIBLE);
 }
 
